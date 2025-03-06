@@ -28,12 +28,12 @@ function FindPassword() {
       await axios.post("api/findPw/verify", { email, code: verificationCode });
       alert("인증번호가 확인되었습니다.");
       setIsCodeVerified(true);
+      console.log("isCodeVerified 상태:", isCodeVerified); // 디버깅용 로그
     } catch (error) {
       console.error(error);
       alert(error.response?.data || "잘못된 인증번호입니다.");
     }
   };
-
   const handleSubmit = async () => {
     if (newPassword !== newPasswordCheck) {
       alert("비밀번호가 일치하지 않습니다.");
@@ -66,15 +66,15 @@ function FindPassword() {
 
   return (
     <FindPasswordContainer>
-       <FindPwBox>
+      <FindPwBox>
         <FindPwTitle>비밀번호 찾기</FindPwTitle>
-        <FindPwSub>이메일을 인증하면 새로운 비밀번호를 입력 할 수 있습니다.</FindPwSub>
-        </FindPwBox>
-
-
+        <FindPwSub>
+          이메일을 인증하면 새로운 비밀번호를 입력 할 수 있습니다.
+        </FindPwSub>
+      </FindPwBox>
 
       <FindPasswordSection>
-      <div className="logo_t">응급 24시 하이펫 반려동물 전문 메디컬센터</div>
+        <div className="logo_t">응급 24시 하이펫 반려동물 전문 메디컬센터</div>
         <FindInput>
           <div>
             <input
@@ -82,12 +82,13 @@ function FindPassword() {
               placeholder="이메일"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={isCodeSent} // 발송 후 이메일 입력 비활성화
             />
-            <button onClick={handleSendCode}>발송</button>
+            {!isCodeSent && <button onClick={handleSendCode}>발송</button>}
           </div>
         </FindInput>
 
-        {isCodeSent && (
+        {isCodeSent && !isCodeVerified && (
           <VerificationSection>
             <div>
               <input
@@ -100,6 +101,7 @@ function FindPassword() {
             </div>
           </VerificationSection>
         )}
+
         {isCodeVerified && (
           <PasswordSection>
             <div>
@@ -141,40 +143,35 @@ const FindPasswordContainer = styled.div`
 `;
 
 const FindPwBox = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-height: 20vh;
-pointer-events: none;
-margin-top: 30px;
-margin-bottom: 30px;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 20vh;
+  pointer-events: none;
+  margin-top: 30px;
+  margin-bottom: 30px;
 `;
-
 
 const FindPwTitle = styled.h1`
-font-weight: 700;
-line-height: 1.3em;
-font-size: 42px;
-color: #111;
+  font-weight: 700;
+  line-height: 1.3em;
+  font-size: 42px;
+  color: #111;
 `;
-
 
 const FindPwSub = styled.p`
-display: block;
-margin-top: 1.5em;
-color: #888888;
-font-size: 14px;
-text-align: center;
-
+  display: block;
+  margin-top: 1.5em;
+  color: #888888;
+  font-size: 14px;
+  text-align: center;
 `;
 
-
 const FindPasswordSection = styled.div`
- max-width: 1280px;
+  max-width: 1280px;
   background-color: #f5f7f9;
-  height:600px;
+  height: 600px;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -182,16 +179,14 @@ const FindPasswordSection = styled.div`
   padding: 65px 0px;
   width: 800px;
 
-    .logo_t{
+  .logo_t {
     font-size: 24px;
     font-weight: 700;
-    color: #0D326F;
+    color: #0d326f;
     text-align: center;
     //font-family: "Montserrat", serif;
   }
-  `;
-
-
+`;
 
 const FindInput = styled.div`
  margin-top: 60px;
@@ -242,9 +237,6 @@ const FindInput = styled.div`
     background-color: #FFA228;
   };
 `;
-
-
-
 
 const VerificationSection = styled.div`
   margin-top: 60px;
@@ -304,6 +296,7 @@ const PasswordSection = styled.div`
   
 
   input {
+  margin-bottom:15px;
     width: 450px;
     height: 54px;
     display: flex;
@@ -320,6 +313,7 @@ const PasswordSection = styled.div`
     color:  #0D326F;
     font-weight: 400;
   }
+    
 
   button{
    margin-top: 60px;
@@ -347,27 +341,28 @@ const PasswordSection = styled.div`
 `;
 
 const CheckBox = styled.div`
-   margin-top: 60px;
-   width: 450px;
-  height: 54px;
+  margin-top: 30px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 0 32px;
-  border-radius: 5px;
-  border: none;
-  background-color: #0D326F;
-  outline: none;
-  
-  color: #fff;
-  font-weight: 500;
-  font-size: 17px;
-  margin-bottom: 85px;
-  text-align: center;
-  
-  &:hover{
-    border: 1px solid #FFA228;
-    background-color: #FFA228;
+  width: 450px;
+
+  button {
+    width: 100%;
+    height: 54px;
+    border-radius: 5px;
+    border: none;
+    background-color: #0d326f;
+    color: #fff;
+    font-weight: 500;
+    font-size: 17px;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+      border: 1px solid #ffa228;
+      background-color: #ffa228;
+    }
   }
 `;
 
