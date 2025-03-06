@@ -5,7 +5,8 @@ import styled from "styled-components";
 import { AuthContext, HttpHeadersContext } from "../../context";
 import Delete from "../../components/button/Delete";
 import List from "../../components/button/List";
-
+import CommentList from "../comment/CommentList";
+import CommentWrite from "../comment/CommentWrite";
 
 function ReviewDetail() {
   const { headers, setHeaders } = useContext(HttpHeadersContext);
@@ -60,7 +61,9 @@ function ReviewDetail() {
           </Table>
         </TableBox>
 
-        <coment></coment>
+        <CommentList reviewId={reviewId} comments={comments} />
+
+        <CommentWrite reviewId={reviewId} />
 
         <BottomBox>
           <Delete />
