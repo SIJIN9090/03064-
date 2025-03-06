@@ -40,48 +40,26 @@ function NoticelWrite() {
   /* 파일 업로드 */
   const fileUpload = async (noticeId) => {
     const fd = new FormData();
-    files.forEach((file) => fd.append("file", file));
+    files.forEach((file) => fd.append("file", file)); // 파일 추가
 
-    await axios
-      .post(`/api/admin/notice/${noticeId}/file`, fd, { headers: headers })
-      .then((resp) => {
-        console.log("[file.js] fileUpload() success :D");
-        console.log(resp.data);
-        alert("파일 업로드 성공 :D");
-      })
-      .catch((err) => {
-        console.log("[FileData.js] fileUpload() error :<");
-        console.log(err);
-      });
-  };
-
-  const createBbs = async () => {
-    const req = {
-      title: title,
-      content: content,
-      // password: password,
-    };
-
-    await axios
-      .post("/api/admin/notice", req, { headers: headers })
-      .then((resp) => {
-        console.log("응답 데이터:", resp.data); // 응답 데이터 확인
-        const noticeId = resp.data.id; // `noticeId` 대신 `id` 사용
-        console.log("추출한 noticeId:", noticeId);
-        alert("새로운 게시글을 성공적으로 등록했습니다 :D");
-        navigate(`/admin/notice`);
-
-        if (noticeId) {
-          fileUpload(noticeId); // 올바른 ID를 전달하여 파일 업로드 실행
-        } else {
-          console.error("❌ noticeId가 응답 데이터에 포함되지 않음!");
+    try {
+      const response = await axios.post(
+        `/api/admin/notice/${noticeId}/file`,
+        fd,
+        {
+          headers: {
+            ...headers,
+            "Content-Type": "multipart/form-data", // 파일 전송 시 Content-Type 설정
+          },
         }
-      })
-      .catch((err) => {
-        console.error("[NoticeWrite.js] createBbs() error:", err);
-      });
+      );
+      console.log("[file.js] fileUpload() success :D", response.data);
+      alert("파일 업로드 성공 :D");
+    } catch (err) {
+      console.log("[FileData.js] fileUpload() error :<", err);
+      alert("파일 업로드 실패");
+    }
   };
-
   return (
     <Container>
       <ContentWrapper>
@@ -115,14 +93,11 @@ function NoticelWrite() {
                         key={index}
                         style={{ display: "flex", alignItems: "center" }}
                       >
-                     
                         <button
                           className="delete-button"
                           type="button"
                           onClick={() => handleRemoveFile(index)}
-                        >
-                       
-                        </button>
+                        ></button>
                       </div>
                     ))}
                     {files.length < 5 && (
@@ -151,6 +126,7 @@ function NoticelWrite() {
             setFiles={setFiles}
             headers={headers}
             postType={postType}
+            fileUpload={fileUpload} // 파일 업로드 함수 전달
           />
           <List postType={postType} />
         </BottomBox>

@@ -47,10 +47,16 @@ function UpdateGo() {
     });
 
     // 각각의 API 호출
-    getBbsDetail();
-    getQuestionDetail();
-    getReviewDetail();
-  }, [noticeId, setHeaders]);
+    if (noticeId) {
+      getBbsDetail();
+    }
+    if (questionId) {
+      getQuestionDetail();
+    }
+    if (reviewId) {
+      getReviewDetail();
+    }
+  }, [noticeId, questionId, reviewId, setHeaders]);
 
   useEffect(() => {
     if (location.state) {

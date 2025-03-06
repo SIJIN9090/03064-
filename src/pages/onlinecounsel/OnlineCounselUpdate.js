@@ -13,6 +13,7 @@ function OnlineCounselUpdate() {
   // 상태값을 useState로 관리하며 기본값은 빈 문자열로 설정
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const questionId = bbs?.id;
 
   // bbs 데이터가 올 때 useEffect로 상태 설정
   useEffect(() => {
@@ -26,26 +27,6 @@ function OnlineCounselUpdate() {
     }
   }, [bbs, navigate]);
 
-  // update 함수
-  const update = async () => {
-    if (!bbs || !bbs.id) {
-      alert("잘못된 요청입니다.");
-      return;
-    }
-
-    try {
-      await axios.patch(`/api/question/${bbs.id}`, {
-        title: title,
-        content: content,
-      });
-      alert("수정되었습니다.");
-      navigate(`/question/${bbs.id}`); // 수정 후 질문 상세 페이지로 이동
-    } catch (error) {
-      console.error("Error updating question:", error);
-      alert("수정에 실패했습니다. 다시 시도해 주세요.");
-    }
-  };
-
   // 제목 변경
   const changeTitle = (event) => {
     setTitle(event.target.value);
@@ -56,14 +37,6 @@ function OnlineCounselUpdate() {
     setContent(event.target.value);
   };
 
-  // 취소 버튼 클릭 시
-  const handleCancelClick = () => {
-    if (bbs && bbs.id) {
-      navigate(`/admin/question/${bbs.id}`); // 취소 시 해당 질문의 디테일 페이지로 이동
-    } else {
-      navigate("/admin/question"); // bbs가 없다면 질문 목록으로 이동
-    }
-  };
   return (
     <Container>
       <ContentWrapper>
@@ -89,7 +62,12 @@ function OnlineCounselUpdate() {
         </TableBox>
 
         <BottomBox>
-          <Update bbs={bbs} />
+          <Update
+            noticeId={questionId}
+            navigate={navigate}
+            title={title}
+            content={content}
+          />
           <Back pageNumber={pageNumber} itemId={bbs.id} />
         </BottomBox>
       </ContentWrapper>

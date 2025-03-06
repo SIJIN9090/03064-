@@ -25,7 +25,13 @@ function NoticeDetail() {
       console.log(response.data);
 
       setNotice(response.data);
-      setFiles(response.data.files); // 서버에서 파일 목록을 받아 설정
+
+      // 서버에서 받아온 파일 목록이 있는지 확인
+      if (response.data.files && Array.isArray(response.data.files)) {
+        setFiles(response.data.files); // 파일 목록이 배열인 경우에만 설정
+      } else {
+        setFiles([]); // 파일 목록이 없으면 빈 배열로 설정
+      }
     } catch (error) {
       console.log("[NoticeDetail.js] getBbsDetail() error :<");
       console.error(error);
@@ -33,20 +39,15 @@ function NoticeDetail() {
   };
 
   useEffect(() => {
-    // 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
+    console.log("noticeId:", noticeId); // 콘솔로 확인
+    if (!noticeId) return;
+
     setHeaders({
       Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     });
-    getBbsDetail();
-  }, []);
 
-  useEffect(() => {
-    console.log("noticeId:", noticeId); // 콘솔로 확인
-    if (!noticeId) return;
-    console.log("noticeId:", noticeId);
-    getBbsDetail();
-  }, []);
-
+    getBbsDetail(); // noticeId가 있을 때만 데이터 요청
+  }, [noticeId]);
   return (
     <Container>
       <ContentWrapper>
@@ -58,7 +59,8 @@ function NoticeDetail() {
               </tr>
               <tr>
                 <td>
-                  <File></File>
+                  <File files={files} noticeId={noticeId} />{" "}
+                  {/* 파일 목록을 File 컴포넌트에 전달 */}
                 </td>
               </tr>
               <tr>

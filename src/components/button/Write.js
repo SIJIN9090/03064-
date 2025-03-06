@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 
 function Write({
   title,
@@ -13,25 +12,9 @@ function Write({
   setFiles,
   headers,
   postType,
+  fileUpload, // fileUpload 함수 전달 받기
 }) {
   const navigate = useNavigate(); // navigate 훅 추가
-
-  // 파일 업로드 함수
-  const fileUpload = async (noticeId) => {
-    if (!files || files.length === 0) {
-      return;
-    }
-
-    const fd = new FormData();
-    files.forEach((file) => fd.append("file", file));
-
-    try {
-      await axios.post(`/api/admin/notice/${noticeId}/file`, fd, { headers });
-      alert("파일 업로드 성공 :D");
-    } catch (err) {
-      console.error("파일 업로드 오류:", err);
-    }
-  };
 
   // 공지사항 게시글 작성
   const createBbsForNotice = async () => {
@@ -48,12 +31,16 @@ function Write({
       const noticeId = response.data.id;
 
       if (noticeId) {
-        fileUpload(noticeId); // 파일 업로드 실행
+        // 게시글 등록 성공 시 파일 업로드
+        await fileUpload(noticeId); // 파일 업로드가 완료된 후 alert을 띄운다
         alert("새로운 공지사항 게시글을 성공적으로 등록했습니다 :D");
+
         // 상태 리셋
         setTitle("");
         setContent("");
         setFiles([]);
+
+        // 공지사항 목록 페이지로 이동
         navigate("/admin/notice");
       } else {
         alert("공지사항 게시글 등록에 실패했습니다.");
