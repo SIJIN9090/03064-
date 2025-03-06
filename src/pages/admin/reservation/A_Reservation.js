@@ -100,7 +100,6 @@ function A_Reservation() {
 
   return (
     <Container>
-      s
       <ContentWrapper>
         <CommonTable
           bbsList={bbsListWithEmptyRows.map((item) => ({

@@ -15,12 +15,14 @@ function FindId() {
 
   return (
     <FindIdContainer>
-          <FindIdBox>
+      <FindIdBox>
         <FindIdTitle>아이디 찾기</FindIdTitle>
-        <FindIdSub>이름과 전화번호를 입력하면 이메일을 찾을 수 있습니다.</FindIdSub>
-        </FindIdBox>
+        <FindIdSub>
+          이름과 전화번호를 입력하면 이메일을 찾을 수 있습니다.
+        </FindIdSub>
+      </FindIdBox>
       <FindIdSection>
-      <div className="logo_t">응급 24시 하이펫 반려동물 전문 메디컬센터</div>
+        <div className="logo_t">응급 24시 하이펫 반려동물 전문 메디컬센터</div>
         <FindiIdInput>
           <div>
             <input type="text" placeholder="이름"></input>
@@ -30,7 +32,7 @@ function FindId() {
 
         {isEmailVisible && (
           <FoundEmailSection>
-            <p>찾은 이메일은  {emailFound} 입니다.</p>
+            <p>찾은 이메일은 {emailFound} 입니다.</p>
           </FoundEmailSection>
         )}
 
@@ -70,9 +72,7 @@ const FindIdBox = styled.div`
   pointer-events: none;
   margin-top: 30px;
   margin-bottom: 30px;
-
 `;
-
 
 const FindIdTitle = styled.h1`
   font-weight: 700;
@@ -81,21 +81,16 @@ const FindIdTitle = styled.h1`
   color: #111;
 `;
 
-
 const FindIdSub = styled.p`
   display: block;
   margin-top: 1.5em;
   color: #888888;
   font-size: 14px;
   text-align: center;
-  
 `;
 
-
-
-
 const FindIdSection = styled.div`
- max-width: 1280px;
+  max-width: 1280px;
   background-color: #f5f7f9;
   margin: auto;
   display: flex;
@@ -105,24 +100,23 @@ const FindIdSection = styled.div`
   padding: 65px 0px;
   width: 800px;
 
-    .logo_t{
+  .logo_t {
     font-size: 24px;
     font-weight: 700;
-    color: #0D326F;
+    color: #0d326f;
     text-align: center;
     //font-family: "Montserrat", serif;
   }
-  `;
-
+`;
 
 const FindiIdInput = styled.div`
-   margin-top: 60px;
+  margin-top: 60px;
   width: 450px;
   box-sizing: border-box;
   text-align: center;
-  
 
   input {
+    margin-bottom: 15px;
     width: 450px;
     height: 54px;
     display: flex;
@@ -136,15 +130,15 @@ const FindiIdInput = styled.div`
 
     //
     font-size: 14.2px;
-    color:  #0D326F;
+    color: #0d326f;
     font-weight: 400;
   }
-    `;
+`;
 
 const FoundEmailSection = styled.div`
-  margin: 20px 0;
+  margin: 20px;
   text-align: center;
-   
+
   p {
     font-size: 18px;
     color: #111111;
@@ -152,7 +146,7 @@ const FoundEmailSection = styled.div`
 `;
 
 const PwFind = styled.div`
-   display: flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
@@ -161,11 +155,10 @@ const PwFind = styled.div`
   height: 23px;
   text-align: center;
   margin: 0 auto;
-  padding: 50px 40px 20px 40px;
-  margin-bottom: 45px;
-  `;
+  padding: 30px 40px 20px 40px;
+  margin-bottom: 25px;
+`;
 const CheckBox = styled.div`
-
   width: 450px;
   height: 54px;
   display: flex;
@@ -174,19 +167,19 @@ const CheckBox = styled.div`
   padding: 0 32px;
   border-radius: 5px;
   border: none;
-  background-color: #0D326F;
+  background-color: #0d326f;
   outline: none;
-  
+
   color: #fff;
   font-weight: 500;
   font-size: 17px;
   margin-bottom: 85px;
   text-align: center;
-  
-  &:hover{
-    border: 1px solid #FFA228;
-    background-color: #FFA228;
-  };
+
+  &:hover {
+    border: 1px solid #ffa228;
+    background-color: #ffa228;
+  }
 `;
 
 export default FindId;
