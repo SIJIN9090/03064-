@@ -167,14 +167,17 @@ function SignUp() {
       }
     }
   };
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
   const [name, setName] = useState("");
   const [addr, setAddr] = useState("");
   const [birth, setBirth] = useState("");
- 
 
   const handleBirthChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, "").slice(0, 8);
-    setBirth(value);
+    const value = e.target.value; // 생년월일 값을 그대로 가져옵니다.
+    setBirth(value); // state에 그대로 저장합니다.
   };
 
   const handleSubmit = async () => {
@@ -279,10 +282,10 @@ function SignUp() {
 
   function regPhoneNumber(e) {
     const result = e.target.value
-        .replace(/[^0-9.]/g, "")
-        .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
-        .replace(/(-{1,2})$/g, "");
-        setPhoneNum(result);
+      .replace(/[^0-9.]/g, "")
+      .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+      .replace(/(-{1,2})$/g, "");
+    setPhoneNum(result);
   }
 
   return (
@@ -345,7 +348,11 @@ function SignUp() {
                 />
               </td>
             </tr>
-            <button type="button" onClick={handleVerifyCode} disabled={emailError}>
+            <button
+              type="button"
+              onClick={handleVerifyCode}
+              disabled={emailError}
+            >
               확인
             </button>
             <tr>
@@ -453,11 +460,11 @@ function SignUp() {
             <tr className="th_form">
               <td>
                 <input
-                className="lable"
+                  className="lable"
                   type="text"
                   placeholder="이름을 입력해주세요"
                   value={name}
-                  onChange={handleEmailChange}
+                  onChange={handleNameChange}
                 />
               </td>
             </tr>
@@ -514,8 +521,8 @@ function SignUp() {
             <tr className="th_form">
               <td>
                 <input
-                   className="lable"
-                      type="date"
+                  className="lable"
+                  type="date"
                   placeholder="연도-월-일"
                   value={birth}
                   onChange={handleBirthChange}
@@ -532,10 +539,10 @@ function SignUp() {
             <tr className="th_form">
               <td>
                 <input
-                 className="lable"
-                 type="text"
-                 maxLength={13}
-                 placeholder="숫자만 입력하세요 (*하이픈 자동 입력)"
+                  className="lable"
+                  type="text"
+                  maxLength={13}
+                  placeholder="숫자만 입력하세요 (*하이픈 자동 입력)"
                   value={phoneNum}
                   onChange={regPhoneNumber}
                 />
@@ -544,92 +551,103 @@ function SignUp() {
           </Tablelable>
         </MailBox>
 
-    {/*반려동물정보 입력*/}
-    <AnimalTitleBox>
+        {/*반려동물정보 입력*/}
+        <AnimalTitleBox>
           <AnimalTitle>반려동물정보 입력</AnimalTitle>
-          <AnimalSub><span className="point">*</span>&nbsp;은 필수 입력 항목입니다.</AnimalSub>
+          <AnimalSub>
+            <span className="point">*</span>&nbsp;은 필수 입력 항목입니다.
+          </AnimalSub>
         </AnimalTitleBox>
-
 
         <AnimalBox>
           {forms.map((form) => (
             <Formtable key={form.id}>
-                     {/*동물이름*/}
-                     <Table>
-                  <tr className="th_title">반려동물 이름<span className="point">&nbsp;*</span></tr>
-                  <tr className="th_form">
-                    <td>
-                    <input
-                        type="text"
-                        placeholder="반려동물 이름을 입력하세요"
-                        value={form.petName}
-                        onChange={(e) => handlePetInfoChange(e, form.id, "petName")}
-                    />
-                  </td>
+              {/*동물이름*/}
+              <Table>
+                <tr className="th_title">
+                  반려동물 이름<span className="point">&nbsp;*</span>
                 </tr>
-                </Table>
-
-        {/*선택 박스*/}
-        <Tabled>
-                  <tr className="th_title">반려동물 종류<span className="point">&nbsp;*</span></tr>
-                  <tr className="th_form">
-                    <td>
-                      <select
-                          className="select_form"
-                          value={form.breed}
-                          onChange={(e) => handlePetInfoChange(e, form.id, "breed")}
-                      >
-                        {" "}
-                        <option
-                            className="option_form"
-                            value="선택"  selected>선택</option>
-                        <option
-                            className="option_form"
-                            value="DOG">DOG</option>
-                        <option
-                            className="option_form"
-                            value="CAT">CAT</option>
-                      </select>
-                      </td>
-                  </tr>
-                </Tabled>
-
-
-                  {/*동물 나이*/}
-                  <Table>
-                  <tr className="th_title">반려동물  나이<span className="point">&nbsp;*</span></tr>
-                  <tr className="th_form">
-                    <td>
-                      <input
-                          type="text"
-                          placeholder="반려동물 나이를 입력하세요"
-                        value={form.age}
-                        onChange={(e) => handlePetInfoChange(e, form.id, "age")}
-                    />
-                  </td>
-                </tr>
-                </Table>
-
-                 {/*삭제 버튼*/}
-                  <tr>
+                <tr className="th_form">
                   <td>
-                    <AnimalBoxButton>
-                      <button class="deButton" danger onClick={() => removeForm(form.id)}>삭제</button>
-                     
-                    </AnimalBoxButton>{" "}
+                    <input
+                      type="text"
+                      placeholder="반려동물 이름을 입력하세요"
+                      value={form.petName}
+                      onChange={(e) =>
+                        handlePetInfoChange(e, form.id, "petName")
+                      }
+                    />
                   </td>
-                  {" "}
                 </tr>
+              </Table>
+
+              {/*선택 박스*/}
+              <Tabled>
+                <tr className="th_title">
+                  반려동물 종류<span className="point">&nbsp;*</span>
+                </tr>
+                <tr className="th_form">
+                  <td>
+                    <select
+                      className="select_form"
+                      value={form.breed}
+                      onChange={(e) => handlePetInfoChange(e, form.id, "breed")}
+                    >
+                      {" "}
+                      <option className="option_form" value="선택" selected>
+                        선택
+                      </option>
+                      <option className="option_form" value="DOG">
+                        DOG
+                      </option>
+                      <option className="option_form" value="CAT">
+                        CAT
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+              </Tabled>
+
+              {/*동물 나이*/}
+              <Table>
+                <tr className="th_title">
+                  반려동물 나이<span className="point">&nbsp;*</span>
+                </tr>
+                <tr className="th_form">
+                  <td>
+                    <input
+                      type="text"
+                      placeholder="반려동물 나이를 입력하세요"
+                      value={form.age}
+                      onChange={(e) => handlePetInfoChange(e, form.id, "age")}
+                    />
+                  </td>
+                </tr>
+              </Table>
+
+              {/*삭제 버튼*/}
+              <tr>
+                <td>
+                  <AnimalBoxButton>
+                    <button
+                      class="deButton"
+                      danger
+                      onClick={() => removeForm(form.id)}
+                    >
+                      삭제
+                    </button>
+                  </AnimalBoxButton>{" "}
+                </td>{" "}
+              </tr>
             </Formtable>
           ))}
-           <AnimalBoxButton>
-                      <button onClick={addForm}>추가</button>
-                      <button type="submit" onClick={handleSubmit}>
-                        회원가입
-                      </button>
-                    </AnimalBoxButton>{" "}
+          <AnimalBoxButton>
+            <button onClick={addForm}>추가</button>
+            <button type="submit" onClick={handleSubmit}>
+              회원가입
+            </button>
+          </AnimalBoxButton>{" "}
         </AnimalBox>
-      
       </SignupSection>
     </SignupContainer>
   );
@@ -724,21 +742,21 @@ const Tabled = styled.div`
   align-items: center;
   justify-content: left;
   margin-bottom: 30px;
-  
-  .th_title{
+
+  .th_title {
     min-width: 92px;
     font-size: 14px;
     color: #111;
     margin-right: 40px;
   }
-.th_form{
-  margin-right: 20px;
-}
+  .th_form {
+    margin-right: 20px;
+  }
   .selectInput {
     border: none;
   }
-  
-  .select_form{
+
+  .select_form {
     width: 630px;
     height: 54px;
     padding: 0 32px;
@@ -750,12 +768,12 @@ const Tabled = styled.div`
     outline: none;
     cursor: pointer;
   }
-  .option_form{
+  .option_form {
     color: #111111;
     font-weight: 400;
-    
-    &:focus{
-      outline: 3px solid #F8E4FF;
+
+    &:focus {
+      outline: 3px solid #f8e4ff;
       border: 1px solid #0d326f;
       font-weight: 600;
     }
@@ -813,7 +831,7 @@ const Tables = styled.div`
   display: flex;
   align-items: center;
   justify-content: left;
-    padding-bottom: 30px;
+  padding-bottom: 30px;
 
   .th_title {
     min-width: 92px;
@@ -824,7 +842,6 @@ const Tables = styled.div`
 
   .th_form {
     margin-right: 20px;
-  
   }
 `;
 
@@ -881,18 +898,17 @@ const Tablelable = styled.div`
     color: #111;
     font-weight: 400;
   }
-  .th_title{
+  .th_title {
     min-width: 92px;
     font-size: 14px;
     color: #111;
     margin-right: 40px;
   }
 
-  .th_form{
-   margin-right: 20px;
+  .th_form {
+    margin-right: 20px;
   }
 `;
-
 
 const MailBox = styled.div`
   width: 900px;
@@ -900,7 +916,7 @@ const MailBox = styled.div`
   align-items: center;
   justify-content: center;
   padding: 20px 20px 20px 20px;
-   position: relative;
+  position: relative;
 
   .th_title {
     font-size: 14px;
@@ -946,10 +962,10 @@ const MailBox = styled.div`
     }
   }
 
-  .idError { 
-  right: 280px;
-  top: 155px;
-  position: absolute;
+  .idError {
+    right: 280px;
+    top: 155px;
+    position: absolute;
     display: flex;
     padding-top: 8px;
     width: 460px;
@@ -1002,7 +1018,6 @@ const Tabless = styled.div`
     }
 `;
 
-
 // 반려동물정보 입력
 
 //2.회원가입_하위타이틀_박스
@@ -1010,7 +1025,6 @@ const AnimalTitleBox = styled.div`
   width: 900px;
   margin: 0 auto;
   margin-top: 85px;
-  
 `;
 const AnimalTitle = styled.h3`
   height: 43px;
@@ -1019,7 +1033,6 @@ const AnimalTitle = styled.h3`
   color: #111;
   font-weight: 900;
   text-align: left;
-  
 `;
 const AnimalSub = styled.p`
   height: 14px;
@@ -1028,12 +1041,11 @@ const AnimalSub = styled.p`
   color: #888;
   font-weight: 300;
   text-align: right;
-  
-  .point{
+
+  .point {
     color: #ff27a3;
   }
 `;
-
 
 const AnimalBox = styled.div`
   width: 900px;
@@ -1043,14 +1055,12 @@ const AnimalBox = styled.div`
   border-top: 1.5px solid #000;
   //border-bottom: 1.5px solid #EEEEEE;
 
-  
-
-  .th_title{
+  .th_title {
     font-size: 14px;
     font-weight: 600;
     color: #111;
   }
-  .point{
+  .point {
     color: #ff27a3;
   }
   td {
@@ -1082,9 +1092,9 @@ const AnimalBox = styled.div`
     font-size: 16px;
     font-weight: 600;
 
-    &:hover{
-      background-color: #0D326F;
-      border: 1px solid #0D326F;
+    &:hover {
+      background-color: #0d326f;
+      border: 1px solid #0d326f;
       color: #fff;
     }
   }
@@ -1104,7 +1114,6 @@ const AnimalBox = styled.div`
   //  height: 26px;
   //}
 `;
-
 
 //반려동물정보 - 삭제/추가
 const AnimalBoxButton = styled.div`
@@ -1154,8 +1163,6 @@ const AnimalBoxButton = styled.div`
   }
 `;
 
-
-
 const Formtable = styled.table`
   width: 100%;
   max-width: 800px;
@@ -1194,7 +1201,5 @@ const PostcodeWrapper = styled.div`
   border-radius: 10px;
   position: relative;
 `;
-
-
 
 export default SignUp;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import styled from "styled-components";
 import axios from "axios";
@@ -63,6 +63,12 @@ function FindPassword() {
       alert(error.response?.data || "비밀번호 변경에 실패했습니다.");
     }
   };
+  useEffect(() => {
+    if (isCodeVerified) {
+      // 인증번호가 확인되었을 때 비밀번호 창을 보여주는 로직
+      console.log("isCodeVerified 상태:", isCodeVerified);
+    }
+  }, [isCodeVerified]);
 
   return (
     <FindPasswordContainer>

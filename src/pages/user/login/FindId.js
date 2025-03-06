@@ -3,14 +3,65 @@ import { Link } from "react-router";
 import styled from "styled-components";
 
 function FindId() {
-  const [emailFound, setEmailFound] = useState(""); // 이메일을 찾은 상태를 저장
-  const [isEmailVisible, setIsEmailVisible] = useState(false); // 이메일을 보여줄지 여부
+  const [name, setName] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
+  const [emailFound, setEmailFound] = useState(""); // 찾은 이메일 저장
+  const [isEmailVisible, setIsEmailVisible] = useState(false); // 이메일 표시 여부
+  const [error, setError] = useState(""); // 에러 메시지 상태 추가
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
 
-  const handleFindEmail = () => {
-    // 여기에서 실제 이메일 찾는 로직을 넣을 수 있음
-    const foundEmail = "example@email.com"; // 예시 이메일
-    setEmailFound(foundEmail);
-    setIsEmailVisible(true); // 이메일을 찾으면 폼을 보이도록 설정
+  const handleFindEmail = async () => {
+    setError("");
+    setIsLoading(true);
+
+    if (!name || !phoneNum) {
+      setError("이름과 전화번호를 모두 입력해주세요.");
+      setIsLoading(false);
+      return;
+    }
+
+    console.log("Request data: ", { name, phoneNum }); // 데이터 확인용 로그
+
+    try {
+      const response = await fetch("/api/findId", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, phoneNum }),
+      });
+
+      if (!response.ok) {
+        const errorDetails = await response.text(); // 오류 메시지 받기
+        throw new Error(`아이디를 찾을 수 없습니다. ${errorDetails}`);
+      }
+      const data = await response.text();
+      console.log("Response data: ", data); // 백엔드 응답 확인용 로그
+
+      const email = data.replace("귀하의 이메일 입니다. : ", "");
+      setEmailFound(email);
+      setIsEmailVisible(true);
+    } catch (err) {
+      setError(err.message);
+      setIsEmailVisible(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const formatPhoneNumber = (value) => {
+    // 하이픈 자동 삽입
+    const cleaned = value.replace(/[^\d]/g, ""); // 숫자만 남기기
+    const match = cleaned.match(/^(\d{3})(\d{3,4})(\d{4})$/);
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    }
+    return value;
+  };
+
+  const handlePhoneNumChange = (e) => {
+    const formattedPhone = formatPhoneNumber(e.target.value);
+    setPhoneNum(formattedPhone);
   };
 
   return (
@@ -25,14 +76,25 @@ function FindId() {
         <div className="logo_t">응급 24시 하이펫 반려동물 전문 메디컬센터</div>
         <FindiIdInput>
           <div>
-            <input type="text" placeholder="이름"></input>
-            <input type="password" placeholder="전화번호"></input>
+            <input
+              type="text"
+              placeholder="이름"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            ></input>
+            <input
+              type="text"
+              placeholder="전화번호"
+              value={phoneNum}
+              onChange={handlePhoneNumChange}
+            ></input>
           </div>
         </FindiIdInput>
 
+        {error && <ErrorSection>{error}</ErrorSection>}
         {isEmailVisible && (
           <FoundEmailSection>
-            <p>찾은 이메일은 {emailFound} 입니다.</p>
+            <p>찾은 이메일 - {emailFound} - 입니다</p>
           </FoundEmailSection>
         )}
 
@@ -43,7 +105,7 @@ function FindId() {
         </PwFind>
 
         <CheckBox>
-          <button>확인</button>
+          <button onClick={handleFindEmail}>확인</button>
         </CheckBox>
       </FindIdSection>
     </FindIdContainer>
@@ -180,6 +242,12 @@ const CheckBox = styled.div`
     border: 1px solid #ffa228;
     background-color: #ffa228;
   }
+`;
+const ErrorSection = styled.div`
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 16px;
 `;
 
 export default FindId;
