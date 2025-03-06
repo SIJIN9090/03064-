@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Update from "../../components/button/Update";
+import Back from "../../components/button/Back";
 
 function ReviewUpdate() {
   const location = useLocation();
@@ -10,6 +12,9 @@ function ReviewUpdate() {
   // const boardId = bbs.boardId;
   const [title, setTitle] = useState(bbs.title);
   const [content, setContent] = useState(bbs.content);
+  const [pageNumber, setPageNumber] = useState(1);
+  const reviewId = bbs?.id;
+  const navigate = useNavigate();
   const update = async () => {
     try {
       const token = localStorage.getItem("access_token"); // 🔥 토큰 가져오기
@@ -71,10 +76,13 @@ function ReviewUpdate() {
         </TableBox>
 
         <BottomBox>
-          <Button onClick={update}>확인</Button>
-          <Link to="/review">
-            <Button>취소</Button>
-          </Link>
+          <Update
+            noticeId={reviewId}
+            navigate={navigate}
+            title={title}
+            content={content}
+          />
+          <Back pageNumber={pageNumber} itemId={bbs.id} />
         </BottomBox>
       </ContentWrapper>
     </Container>

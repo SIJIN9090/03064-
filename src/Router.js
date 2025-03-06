@@ -24,7 +24,6 @@ import A_UserLayout from "./pages/admin/user/A_UserLayout";
 import A_ReservationLayout from "../src/pages/admin/reservation/A_ReservationLayout";
 import A_Reservation from "../src/pages/admin/reservation/A_Reservation";
 
-
 // 공지사항
 import NoticeLayout from "./pages/notice/NoticeLayout";
 import Notice from "./pages/notice/Notice";
@@ -49,13 +48,11 @@ import ReviewUpdate from "./pages/reviews/ReviewUpdate";
 // admin
 import MyPageCheck from "./pages/user/mypage/myPageCheck";
 
-import AutoLogout from "../src/AutoLogout";
+import SessionTimeout from "../src/SessionTimeout";
 const Router = () => {
-
   return (
-    
     <BrowserRouter>
-    <AutoLogout />
+      <SessionTimeout />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -98,7 +95,7 @@ const Router = () => {
           <Route path="adminuser" element={<A_UserLayout />}>
             <Route index element={<A_User />} />
           </Route>
-          
+
           <Route path="a_reservation" element={<A_ReservationLayout />}>
             <Route index element={<A_Reservation />} />
           </Route>

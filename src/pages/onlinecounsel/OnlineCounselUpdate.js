@@ -2,12 +2,14 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Update from "../../components/button/Update";
+import Back from "../../components/button/Back";
 
 function OnlineCounselUpdate() {
   const location = useLocation();
   const { bbs } = location.state || {}; // location.state에서 bbs가 없을 수 있음
   const navigate = useNavigate();
-
+  const [pageNumber, setPageNumber] = useState(1);
   // 상태값을 useState로 관리하며 기본값은 빈 문자열로 설정
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -87,8 +89,8 @@ function OnlineCounselUpdate() {
         </TableBox>
 
         <BottomBox>
-          <Button onClick={update}>확인</Button>
-          <Button onClick={handleCancelClick}>취소</Button>
+          <Update bbs={bbs} />
+          <Back pageNumber={pageNumber} itemId={bbs.id} />
         </BottomBox>
       </ContentWrapper>
     </Container>

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
-  const [selectedMenu, setSelectedMenu] = useState("users");
+  const [selectedMenu, setSelectedMenu] = useState("adminuser");
 
   const menuItems = [
     { title: "회원 관리", key: "adminuser", path: "adminuser" },
@@ -23,7 +23,7 @@ const AdminLayout = () => {
     <LayoutContainer>
       {/* 사이드바 */}
       <Sidebar>
-        <SidebarTitle>Admin</SidebarTitle>
+        <SidebarTitle>관리자</SidebarTitle>
         <SidebarMenu>
           {menuItems.map((item) => (
             <li
@@ -49,9 +49,9 @@ const AdminLayout = () => {
 
 const LayoutContainer = styled.div`
   display: flex;
-  height: 100vh;
-   width: 1280px;
-   margin: 0 auto;
+  height: 100%;
+  width: 1280px;
+  margin: 0 auto;
 `;
 
 const Sidebar = styled.div`
@@ -62,25 +62,45 @@ const Sidebar = styled.div`
 `;
 
 const SidebarTitle = styled.h3`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   margin-bottom: 30px;
+  font-size: 30px;
+  height: 80px;
 `;
 
 const SidebarMenu = styled.ul`
   list-style: none;
-  padding: 0;
+  margin: 0;
 
   li {
-    margin: 10px 0;
+    margin: 15px 0;
     cursor: pointer;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s ease-in-out;
+
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      background-color: #333;
+      transform: scale(1.05); /* 부드럽게 확대 */
+    }
 
     &.active {
-      background-color: #444;
+      background-color: #555; /* 선택된 항목 배경색 */
     }
 
     a {
       color: white;
       text-decoration: none;
+      display: block; /* 링크가 li의 크기 전체를 차지하도록 */
+      font-weight: 600; /* 글씨 강조 */
+      padding: 5px 0; /* 링크의 수평 여백 */
     }
   }
 `;
@@ -90,7 +110,6 @@ const ContentArea = styled.div`
 
   width: 1200px;
   transform: scale(1);
-
 `;
 
 export default AdminLayout;

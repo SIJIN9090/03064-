@@ -7,6 +7,7 @@ import Delete from "../../components/button/Delete";
 import List from "../../components/button/List";
 import CommentList from "../comment/CommentList";
 import CommentWrite from "../comment/CommentWrite";
+import UpdateGo from "../../components/button/UpdateGo";
 
 function ReviewDetail() {
   const { headers, setHeaders } = useContext(HttpHeadersContext);
@@ -62,9 +63,8 @@ function ReviewDetail() {
         <BottomBox>
           <Delete />
 
-          <Link to={`/review/${reviewId}`} state={{ bbs: review }}>
-            <Button>수정</Button>
-          </Link>
+          <UpdateGo />
+
           <List postType={postType} />
         </BottomBox>
       </ContentWrapper>

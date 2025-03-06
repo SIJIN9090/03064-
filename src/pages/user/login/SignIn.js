@@ -32,6 +32,25 @@ function SignIn() {
     }
   };
 
+  // 페이지 새로고침 시 로그인 상태 복구
+  useEffect(() => {
+    // 페이지 새로고침 시, 토큰이 있으면 상태를 복원
+    const token = localStorage.getItem("access_token");
+    const nickName = localStorage.getItem("nick_name");
+
+    // 토큰과 닉네임이 둘 다 있으면 상태 설정
+    if (token && nickName) {
+      setAuth({ nick_name: nickName, access_token: token });
+
+      // 헤더 설정
+      setHeaders({ Authorization: `Bearer ${token}` });
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    } else {
+      // 토큰 또는 닉네임이 없으면 상태를 초기화
+      setAuth({ nick_name: "", access_token: "" }); // 초기화 시 빈 객체로 설정
+    }
+  }, [setAuth, setHeaders]); // setHeaders를 의존성 배열에 추가
+
   const login = async () => {
     const req = {
       email: id,
@@ -39,7 +58,7 @@ function SignIn() {
     };
 
     try {
-      const resp = await axios.post("/api/login", req); // axios로 POST 요청
+      const resp = await axios.post("/api/login", req);
       console.log("Login OK");
       console.log(resp.data);
 
@@ -49,30 +68,21 @@ function SignIn() {
       localStorage.setItem("access_token", resp.data.token);
       localStorage.setItem("nick_name", resp.data.nickName);
 
+      // 상태 업데이트
       setAuth({ nick_name: resp.data.nickName, access_token: resp.data.token });
-      setHeaders({ Authorization: `Bearer ${resp.data.token}` }); // HttpHeadersContext에 Authorization 헤더 저장
+
+      // axios 인스턴스에 헤더 설정
+      setHeaders({ Authorization: `Bearer ${resp.data.token}` });
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${resp.data.token}`;
 
       navigate("/"); // 로그인 후 홈으로 리다이렉트
     } catch (e) {
       alert("이메일 또는 비밀번호가 일치하지 않습니다.");
-      console.error("Error Details:"); // 전체 오류 객체 출력
+      console.error("Error Details:", e);
     }
   };
-
-  // 새로고침 시 로그인 상태 유지
-  useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    const nickName = localStorage.getItem("nick_name");
-
-    if (token && nickName) {
-      console.log("로그인 상태 유지:", nickName);
-      setAuth({ nick_name: nickName, access_token: token });
-      setHeaders({ Authorization: `Bearer ${token}` });
-      navigate("/"); // 이미 로그인된 상태면 홈으로 리다이렉트
-    } else {
-      console.log("로그인 정보가 없습니다.");
-    }
-  }, [setAuth, setHeaders, navigate]);
 
   return (
     <LoginContainer>

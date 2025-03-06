@@ -6,25 +6,38 @@ import { HttpHeadersContext } from "../../context"; // HttpHeadersContext import
 
 function UpdateGo() {
   const { setHeaders } = useContext(HttpHeadersContext); // setHeaders 가져오기
-  const { noticeId, questionId } = useParams(); // noticeId와 questionId 받기
+  const { noticeId, questionId, reviewId } = useParams(); // useParams로 noticeId 받기
   const navigate = useNavigate();
   const location = useLocation();
   const [notice, setNotice] = useState(null); // notice 상태 추가
   const [question, setQuestion] = useState(null); // question 상태 추가
+  const [review, setReview] = useState(null); // review 상태 추가
 
-  // 게시글 상세 데이터를 가져오는
-  //  함수 (공지사항과 질문을 구분하여 처리)
+  // 게시글 상세 데이터를 가져오는 함수
   const getBbsDetail = async () => {
     try {
-      if (noticeId) {
-        const response = await axios.get(`/api/notice/${noticeId}`);
-        setNotice(response.data); // 받아온 데이터를 notice 상태에 저장
-      } else if (questionId) {
-        const response = await axios.get(`/api/question/${questionId}`);
-        setQuestion(response.data); // 받아온 데이터를 question 상태에 저장
-      }
+      const response = await axios.get(`/api/notice/${noticeId}`);
+      setNotice(response.data); // 받아온 데이터를 notice 상태에 저장
     } catch (error) {
       console.error("getBbsDetail() error:", error);
+    }
+  };
+
+  const getQuestionDetail = async () => {
+    try {
+      const response = await axios.get(`/api/question/${questionId}`);
+      setQuestion(response.data); // 받아온 데이터를 question 상태에 저장
+    } catch (error) {
+      console.error("getQuestionDetail() error:", error);
+    }
+  };
+
+  const getReviewDetail = async () => {
+    try {
+      const response = await axios.get(`/api/review/${reviewId}`);
+      setReview(response.data); // 받아온 데이터를 review 상태에 저장
+    } catch (error) {
+      console.error("getReviewDetail() error:", error);
     }
   };
 
@@ -32,65 +45,36 @@ function UpdateGo() {
     setHeaders({
       Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     });
+
+    // 각각의 API 호출
     getBbsDetail();
-  }, [noticeId, questionId, setHeaders]);
+    getQuestionDetail();
+    getReviewDetail();
+  }, [noticeId, setHeaders]);
 
   useEffect(() => {
     if (location.state) {
-      console.log(location.state); // state 확인
-      if (location.state.bbs) {
-        setNotice(location.state.bbs);
-      }
-      if (location.state.question) {
-        setQuestion(location.state.question);
-      }
+      setNotice(location.state.bbs); // location.state로 전달된 notice가 있으면 상태로 설정
+      setQuestion(location.state.question); // location.state로 전달된 question이 있으면 상태로 설정
+      setReview(location.state.review); // location.state로 전달된 review가 있으면 상태로 설정
     }
   }, [location.state]);
 
-  const handleEditClick = async () => {
-    try {
-      let apiUrl = "";
-      let redirectUrl = "";
+  const handleEditClick = () => {
+    const isAdmin = location.pathname.includes("/admin"); // 어드민 여부 확인
 
-      if (noticeId) {
-        // 공지사항 업데이트 페이지로 이동
-        apiUrl = `/api/notice/${noticeId}`;
-        redirectUrl = `/admin/notice/${noticeId}`;
-      } else if (questionId) {
-        // 질문 업데이트 페이지로 이동
-        apiUrl = `/api/question/${questionId}`;
-        redirectUrl = location.pathname.includes("/admin")
-          ? `/admin/question/${questionId}`
-          : `/question/${questionId}`;
-      }
-
-      // 수정 요청 보내기
-      const response = await axios.put(apiUrl, {
-        // 요청에 필요한 데이터 (예: title, content 등)
-        title: "새로운 제목",
-        content: "수정된 내용",
+    if (question) {
+      navigate(`${isAdmin ? "/admin" : ""}/question/${noticeId}/update`, {
+        state: { bbs: question },
       });
-
-      if (response.status === 200) {
-        alert("수정되었습니다.");
-        navigate(redirectUrl);
-      } else {
-        throw new Error("수정 실패");
-      }
-    } catch (error) {
-      console.error("수정 실패:", error);
-      alert("수정에 실패했습니다. 다시 시도해 주세요.");
-      // 실패 시 해당 게시글 상세 페이지로 이동
-      if (noticeId) {
-        navigate(`/admin/notice/${noticeId}`);
-      } else if (questionId) {
-        // 어드민 페이지인지 확인 후 이동
-        if (location.pathname.includes("/admin")) {
-          navigate(`/admin/question/${questionId}`); // 어드민 페이지로 이동
-        } else {
-          navigate(`/question/${questionId}`); // 일반 페이지로 이동
-        }
-      }
+    } else if (review) {
+      navigate(`${isAdmin ? "/admin" : ""}/review/${noticeId}/update`, {
+        state: { bbs: review },
+      });
+    } else {
+      navigate(`${isAdmin ? "/admin" : ""}/notice/${noticeId}/update`, {
+        state: { bbs: notice },
+      });
     }
   };
 

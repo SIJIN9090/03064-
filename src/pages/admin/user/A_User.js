@@ -1,4 +1,4 @@
-import React, { lazy, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import CommonTable from "../../../components/common/CommonTable";
@@ -62,8 +62,8 @@ function A_User() {
     }
 
     try {
-      // 삭제 요청
-      const response = await axios.delete(`/api/delete`, {
+      // 삭제 요청 (memberId 동적으로 URL에 포함)
+      const response = await axios.delete(`/api/admin/member/${memberId}`, {
         headers: {
           Authorization: `Bearer ${token}`, // 인증 토큰을 헤더에 포함
         },
@@ -71,7 +71,7 @@ function A_User() {
 
       if (response.status === 200) {
         alert("삭제하였습니다.");
-        navigate("/adminuser"); // 삭제 후 관리 페이지로 리디렉션
+        navigate("admin/adminuser"); // 삭제 후 관리 페이지로 리디렉션
       } else {
         alert("삭제에 실패하였습니다.");
       }
@@ -124,7 +124,6 @@ function A_User() {
     </Container>
   );
 }
-
 // 스타일 컴포넌트들
 const Container = styled.div`
   height: 100%;

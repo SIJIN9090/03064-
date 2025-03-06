@@ -9,6 +9,7 @@ import searchIcon from "../../assets/imgs/header_search.svg";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext, HttpHeadersContext } from "../../context";
+import axios from "axios";
 // --------------------------------------------------------------------------------------------------------------------
 
 function Header() {
@@ -98,30 +99,31 @@ function Header() {
   const handleLogout = () => {
     const confirmLogout = window.confirm("로그아웃 하시겠습니까?");
     if (confirmLogout) {
-      // localStorage에서 토큰과 사용자 정보 삭제
       localStorage.removeItem("access_token");
       localStorage.removeItem("nick_name");
 
-      // 상태 초기화
       setAuth({ nick_name: null, access_token: null });
-
-      // 헤더 초기화 (Authorization 헤더 제거)
       setHeaders({ Authorization: "" });
 
-      // 로그아웃 후 로그인 페이지로 리디렉션
-      navigate("/login");
+      navigate("/signIn"); // 로그아웃 후 로그인 페이지로 리디렉션
     }
   };
 
   useEffect(() => {
-    if (!auth.access_token) {
-      console.log("로그아웃 상태 확인");
-      navigate("/signIn"); // 로그아웃된 상태에서 로그인 페이지로 리디렉션
+    const token = localStorage.getItem("access_token");
+    const nickName = localStorage.getItem("nick_name");
+
+    // token과 nickName이 둘 다 있을 때만 setAuth 호출
+    if (token && nickName) {
+      setAuth({ nick_name: nickName, access_token: token });
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    } else {
+      setAuth({ nick_name: "", access_token: "" }); // 초기화 상태 설정
     }
-  }, [auth]); // auth 상태가 변경될 때마다 리렌더링
+  }, [setAuth]);
 
   const handleMyPageClick = (e) => {
-    if (!auth) {
+    if (!auth || !auth.nick_name) {
       e.preventDefault(); // 기본 링크 동작 방지
       alert("로그인이 필요합니다! 로그인 페이지로 이동합니다.");
       navigate("/signIn");

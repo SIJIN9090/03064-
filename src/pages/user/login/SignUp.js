@@ -311,243 +311,267 @@ function SignUp() {
         <MailBox>
           {/*1.아이디*/}
           <Table>
-            <tr className="th_title">
-              이메일<span className="point">&nbsp;*</span>
-            </tr>
-            <tr className="th_form">
-              <td>
-                <input
-                  type="text"
-                  placeholder="이메일을 입력해주세요"
-                  value={email}
-                  onChange={handleEmailChange}
-                />
-              </td>
-            </tr>
-            <button
-              type="button"
-              onClick={handleSendVerificationEmail}
-              disabled={emailError}
-            >
-              전송
-            </button>
+            <tbody>
+              <tr>
+                <td className="th_title">
+                  이메일<span className="point">&nbsp;*</span>
+                </td>
+
+                <td className="th_form">
+                  <input
+                    type="text"
+                    placeholder="이메일을 입력해주세요"
+                    value={email}
+                    onChange={handleEmailChange}
+                  />
+                </td>
+
+                <button
+                  type="button"
+                  onClick={handleSendVerificationEmail}
+                  disabled={emailError}
+                >
+                  전송
+                </button>
+              </tr>
+            </tbody>
           </Table>
 
           {/*2.인증*/}
           <Table>
-            <tr className="th_title">
-              인증코드<span className="point">&nbsp;*</span>
-            </tr>
-            <tr className="th_form">
-              <td>
-                <input
-                  type="text"
-                  placeholder="인증코드를 입력해주세요"
-                  value={code}
-                  onChange={handleCodeChange}
-                />
-              </td>
-            </tr>
-            <button
-              type="button"
-              onClick={handleVerifyCode}
-              disabled={emailError}
-            >
-              확인
-            </button>
-            <tr>
-              <td className="idError">
-                {(emailError || message) && (
-                  <small style={{ color: emailError ? "red" : "green" }}>
-                    {emailError || message}
-                  </small>
-                )}
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td className="th_title">
+                  인증코드<span className="point">&nbsp;*</span>
+                </td>
+                <td className="th_form">
+                  <input
+                    type="text"
+                    placeholder="인증코드를 입력해주세요"
+                    value={code}
+                    onChange={handleCodeChange}
+                  />
+                </td>
+                <button
+                  type="button"
+                  onClick={handleVerifyCode}
+                  disabled={emailError}
+                >
+                  확인
+                </button>
+                <tr>
+                  <td className="idError">
+                    {(emailError || message) && (
+                      <small style={{ color: emailError ? "red" : "green" }}>
+                        {emailError || message}
+                      </small>
+                    )}
+                  </td>
+                </tr>
+              </tr>
+            </tbody>
           </Table>
 
           {/*2.비밀번호*/}
           <Tables>
-            <tr className="th_title">
-              비밀번호<span className="point">&nbsp;*</span>
-            </tr>
-            <tr className="th_form">
-              <td>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  placeholder="비밀번호를 입력해주세요 "
-                  theme="underLine"
-                  maxLength={16}
-                />
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td className="th_title">
+                  비밀번호<span className="point">&nbsp;*</span>
+                </td>
+                <td className="th_form">
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    placeholder="비밀번호를 입력해주세요 "
+                    theme="underLine"
+                    maxLength={16}
+                  />
+                </td>
+              </tr>
+            </tbody>
           </Tables>
           {/* <Article>영문, 숫자포힘 8자 이상 입력해주세요.</Article> */}
 
           {/* 3.비밀번호 확인 */}
           <Table>
-            <tr className="th_title">
-              비밀번호 확인<span className="point">&nbsp;*</span>
-            </tr>
-            <tr className="th_form">
-              <td>
-                <input
-                  type="password"
-                  value={passwordCheck}
-                  onChange={handlepasswordCheckdChange}
-                  placeholder="비밀번호 확인"
-                  theme="underLine"
-                  maxLength={16}
-                />
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <td className="pwdError">
-                  {(passwordError || passwordCheckError) && (
-                    <small style={{ color: "red" }}>
-                      {passwordError || passwordCheckError}
-                    </small>
-                  )}
+            <tbody>
+              <tr>
+                <td className="th_title">
+                  비밀번호 확인<span className="point">&nbsp;*</span>
                 </td>
-              </td>
-            </tr>
+                <td className="th_form">
+                  <input
+                    className="pwdCheck"
+                    type="password"
+                    value={passwordCheck}
+                    onChange={handlepasswordCheckdChange}
+                    placeholder="비밀번호 확인"
+                    theme="underLine"
+                    maxLength={16}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <td className="pwdError">
+                    {(passwordError || passwordCheckError) && (
+                      <small style={{ color: "red" }}>
+                        {passwordError || passwordCheckError}
+                      </small>
+                    )}
+                  </td>
+                </td>
+              </tr>
+            </tbody>
           </Table>
 
           {/* 4.닉네임 */}
           <Table>
-            <tr className="th_title">
-              닉네임<span className="point">&nbsp;*</span>
-            </tr>
-            <tr className="th_form">
-              <td>
-                {" "}
-                <input
-                  type="text"
-                  value={nickName}
-                  onChange={handleNickNameChange}
-                  placeholder="닉네임을 입력하세요"
-                />
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td className="th_title">
+                  닉네임<span className="point">&nbsp;*</span>
+                </td>
+                <td className="th_form">
+                  {" "}
+                  <input
+                    type="text"
+                    value={nickName}
+                    onChange={handleNickNameChange}
+                    placeholder="닉네임을 입력하세요"
+                  />
+                </td>
 
-            <td className="nickError">
-              {nickNameError && (
-                <small style={{ color: "red" }}>{nickNameError}</small>
-              )}
-              {nickNameMessage && (
-                <small style={{ color: nickNameError ? "red" : "green" }}>
-                  {nickNameMessage}
-                </small>
-              )}
-            </td>
+                <td className="nickError">
+                  {nickNameError && (
+                    <small style={{ color: "red" }}>{nickNameError}</small>
+                  )}
+                  {nickNameMessage && (
+                    <small style={{ color: nickNameError ? "red" : "green" }}>
+                      {nickNameMessage}
+                    </small>
+                  )}
+                </td>
 
-            <tr>
-              <button type="button" onClick={handleNickNameCheck}>
-                확인
-              </button>
-            </tr>
+                <td>
+                  <button type="button" onClick={handleNickNameCheck}>
+                    확인
+                  </button>
+                </td>
+              </tr>
+            </tbody>
           </Table>
 
           {/* 5.이름*/}
           <Tablelable>
-            <tr className="th_title">
-              이름<span className="point">&nbsp;*</span>
-            </tr>
-            <tr className="th_form">
-              <td>
-                <input
-                  className="lable"
-                  type="text"
-                  placeholder="이름을 입력해주세요"
-                  value={name}
-                  onChange={handleNameChange}
-                />
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td className="th_title">
+                  이름<span className="point">&nbsp;*</span>
+                </td>
+                <td className="th_form">
+                  <input
+                    className="lable"
+                    type="text"
+                    placeholder="이름을 입력해주세요"
+                    value={name}
+                    onChange={handleNameChange}
+                  />
+                </td>
+              </tr>
+            </tbody>
           </Tablelable>
 
           {/*6.주소*/}
           <Tabless>
-            <tr className="th_title">
-              주소<span className="point"></span>
-            </tr>
-            <tr className="th_form">
-              <button type="button" onClick={() => setIsOpen(true)}>
-                검색
-              </button>
+            <tbody>
+              <tr>
+                <td className="th_title">
+                  주소<span className="point"></span>
+                </td>
+                <td className="th_form">
+                  <button type="button" onClick={() => setIsOpen(true)}>
+                    검색
+                  </button>
+                </td>
 
-              <td>
-                <input
-                  type="text"
-                  value={address} // 우편번호 검색 결과 주소 표시
-                  placeholder="우편번호를 검색하세요"
-                  readOnly
-                />
-              </td>
-            </tr>
+                <td>
+                  <input
+                    type="text"
+                    value={address} // 우편번호 검색 결과 주소 표시
+                    placeholder="우편번호를 검색하세요"
+                    readOnly
+                  />
+                </td>
+              </tr>
+            </tbody>
           </Tabless>
 
           {/*6-2.상세주소*/}
           <TableBox>
-            <tr>
-              <td>
-                <input
-                  className="address"
-                  type="text"
-                  value={detailAddress} // 상세 주소 표시 및 변경 가능
-                  onChange={handleDetailAddressChange} // 상세 주소 변경 시 addr 업데이트
-                  placeholder="상세주소를 입력하세요"
-                />
-                {isOpen && (
-                  <Modal>
-                    <Overlay onClick={() => setIsOpen(false)} />
-                    <PostcodeWrapper>
-                      <DaumPostcode onComplete={handleComplete} />
-                    </PostcodeWrapper>
-                  </Modal>
-                )}
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td>
+                  <input
+                    className="address"
+                    type="text"
+                    value={detailAddress} // 상세 주소 표시 및 변경 가능
+                    onChange={handleDetailAddressChange} // 상세 주소 변경 시 addr 업데이트
+                    placeholder="상세주소를 입력하세요"
+                  />
+                  {isOpen && (
+                    <Modal>
+                      <Overlay onClick={() => setIsOpen(false)} />
+                      <PostcodeWrapper>
+                        <DaumPostcode onComplete={handleComplete} />
+                      </PostcodeWrapper>
+                    </Modal>
+                  )}
+                </td>
+              </tr>
+            </tbody>
           </TableBox>
           {/*7.생년월일*/}
           <Tablelable>
-            <tr className="th_title">
-              생년월일<span className="point">&nbsp;*</span>
-            </tr>
-            <tr className="th_form">
-              <td>
-                <input
-                  className="lable"
-                  type="date"
-                  placeholder="연도-월-일"
-                  value={birth}
-                  onChange={handleBirthChange}
-                />
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td className="th_title">
+                  생년월일<span className="point">&nbsp;*</span>
+                </td>
+                <td className="th_form dateInput">
+                  <input
+                    className="lable "
+                    type="date"
+                    placeholder="연도-월-일"
+                    value={birth}
+                    onChange={handleBirthChange}
+                  />
+                </td>
+              </tr>
+            </tbody>
           </Tablelable>
 
           {/*8.전화번호*/}
           <Tablelable>
-            <tr className="th_title">
-              전화번호<span className="point">&nbsp;*</span>
-            </tr>
-            <tr className="th_form">
-              <td>
-                <input
-                  className="lable"
-                  type="text"
-                  maxLength={13}
-                  placeholder="숫자만 입력하세요 (*하이픈 자동 입력)"
-                  value={phoneNum}
-                  onChange={regPhoneNumber}
-                />
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td className="th_title">
+                  전화번호<span className="point">&nbsp;*</span>
+                </td>
+                <td className="th_form">
+                  <input
+                    className="lable"
+                    type="text"
+                    maxLength={13}
+                    placeholder="숫자만 입력하세요 (*하이픈 자동 입력)"
+                    value={phoneNum}
+                    onChange={regPhoneNumber}
+                  />
+                </td>
+              </tr>
+            </tbody>
           </Tablelable>
         </MailBox>
 
@@ -564,81 +588,90 @@ function SignUp() {
             <Formtable key={form.id}>
               {/*동물이름*/}
               <Table>
-                <tr className="th_title">
-                  반려동물 이름<span className="point">&nbsp;*</span>
-                </tr>
-                <tr className="th_form">
-                  <td>
-                    <input
-                      type="text"
-                      placeholder="반려동물 이름을 입력하세요"
-                      value={form.petName}
-                      onChange={(e) =>
-                        handlePetInfoChange(e, form.id, "petName")
-                      }
-                    />
-                  </td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td className="th_title">
+                      반려동물 이름<span className="point">&nbsp;*</span>
+                    </td>
+                    <td className="th_form">
+                      <input
+                        type="text"
+                        placeholder="반려동물 이름을 입력하세요"
+                        value={form.petName}
+                        onChange={(e) =>
+                          handlePetInfoChange(e, form.id, "petName")
+                        }
+                      />
+                    </td>
+                  </tr>
+                </tbody>
               </Table>
 
               {/*선택 박스*/}
               <Tabled>
-                <tr className="th_title">
-                  반려동물 종류<span className="point">&nbsp;*</span>
-                </tr>
-                <tr className="th_form">
-                  <td>
-                    <select
-                      className="select_form"
-                      value={form.breed}
-                      onChange={(e) => handlePetInfoChange(e, form.id, "breed")}
-                    >
-                      {" "}
-                      <option className="option_form" value="선택" selected>
-                        선택
-                      </option>
-                      <option className="option_form" value="DOG">
-                        DOG
-                      </option>
-                      <option className="option_form" value="CAT">
-                        CAT
-                      </option>
-                    </select>
-                  </td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td className="th_title">
+                      반려동물 종류<span className="point">&nbsp;*</span>
+                    </td>
+                    <td className="th_form">
+                      <select
+                        className="select_form"
+                        value={form.breed}
+                        onChange={(e) =>
+                          handlePetInfoChange(e, form.id, "breed")
+                        }
+                      >
+                        {" "}
+                        <option className="option_form" value="선택" selected>
+                          선택
+                        </option>
+                        <option className="option_form" value="DOG">
+                          DOG
+                        </option>
+                        <option className="option_form" value="CAT">
+                          CAT
+                        </option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
               </Tabled>
 
               {/*동물 나이*/}
               <Table>
-                <tr className="th_title">
-                  반려동물 나이<span className="point">&nbsp;*</span>
-                </tr>
-                <tr className="th_form">
-                  <td>
-                    <input
-                      type="text"
-                      placeholder="반려동물 나이를 입력하세요"
-                      value={form.age}
-                      onChange={(e) => handlePetInfoChange(e, form.id, "age")}
-                    />
-                  </td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td className="th_title">
+                      반려동물 나이<span className="point">&nbsp;*</span>
+                    </td>
+                    <td className="th_form">
+                      <input
+                        type="text"
+                        placeholder="반려동물 나이를 입력하세요"
+                        value={form.age}
+                        onChange={(e) => handlePetInfoChange(e, form.id, "age")}
+                      />
+                    </td>
+                  </tr>
+                </tbody>
               </Table>
-
-              {/*삭제 버튼*/}
-              <tr>
-                <td>
-                  <AnimalBoxButton>
-                    <button
-                      class="deButton"
-                      danger
-                      onClick={() => removeForm(form.id)}
-                    >
-                      삭제
-                    </button>
-                  </AnimalBoxButton>{" "}
-                </td>{" "}
-              </tr>
+              <tbody>
+                {/*삭제 버튼*/}
+                <tr>
+                  <td>
+                    <AnimalBoxButton>
+                      <button
+                        class="deButton"
+                        danger
+                        onClick={() => removeForm(form.id)}
+                      >
+                        삭제
+                      </button>
+                    </AnimalBoxButton>{" "}
+                  </td>{" "}
+                </tr>
+              </tbody>
             </Formtable>
           ))}
           <AnimalBoxButton>
@@ -667,7 +700,7 @@ const LoginBox = styled.div`
   justify-content: center;
   height: 20vh;
   pointer-events: none;
-  margin-top: 60px;
+  margin-top: 30px;
   margin-bottom: 30px;
 `;
 const LoginTitle = styled.h1`
@@ -720,19 +753,6 @@ const SignupSection = styled.div`
   padding: 45px 20px 20px 20px;
   border-top: 1.5px solid #000;
   border-bottom: 1.5px solid #eeeeee;
-`;
-
-const Article = styled.p`
-  font-size: 14px;
-  font-weight: 300;
-  color: #888;
-  max-width: 477px;
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  text-indent: 20px;
-  height: 20px;
-  margin-bottom: 35px;
 `;
 
 //반려동물 종류
@@ -797,29 +817,31 @@ const Table = styled.div`
   justify-content: left;
   margin-bottom: 30px;
 
-  
-  .th_title{
+  .th_title {
     min-width: 92px;
     font-size: 14px;
     color: #111;
     margin-right: 40px;
   }
 
-  .th_form{
-   margin-right: 20px;
+  .th_form {
+    margin-right: 20px;
   }
 
-  .pwdError{
+  .pwdError {
+    width: 500px;
+    position: absolute;
+    display: flex;
+    top: 5px;
+    left: 140px;
+  }
+  .pwdCheck {
     position: relative;
-     display: flex;
-    top: 40px;
-    right: 500px;
+    right: 8px;
   }
-
-  .nickError{s
-  z-index: 99;
-      position: absolute;
-     display: flex;
+  .nickError {
+    position: absolute;
+    display: flex;
     top: 415px;
     right: 588px;
   }
@@ -851,8 +873,8 @@ const TableBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: left;
-  margin-left: 135px;
-  margin-bottom: 35px;
+  margin-left: 95px;
+  margin-bottom: 20px;
 
   //인풋
   .address {
@@ -885,7 +907,7 @@ const Tablelable = styled.div`
   display: flex;
   align-items: center;
   justify-content: left;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 
   .lable {
     width: 630px;
@@ -907,6 +929,10 @@ const Tablelable = styled.div`
 
   .th_form {
     margin-right: 20px;
+  }
+
+  .dateInput {
+    padding-bottom: 10px;
   }
 `;
 
@@ -932,6 +958,7 @@ const MailBox = styled.div`
 
   //인풋
   input {
+    margin-left: 40px;
     width: 477px;
     height: 54px;
     padding: 0 32px;
@@ -945,6 +972,7 @@ const MailBox = styled.div`
 
   //버튼
   button {
+    margin-left: 20px;
     width: 144px;
     height: 54px;
     background-color: transparent;
@@ -992,10 +1020,16 @@ const Tabless = styled.div`
     color: #111;
     margin-right: 40px;
   }
-
   .th_form{
-   margin-right: 20px;
+    top:20px;
+    left:20px;
   }
+  input{
+      width: 468px;
+  }
+
+
+
 
   //버튼
   button {
@@ -1009,13 +1043,15 @@ const Tabless = styled.div`
     font-size: 16px;
     font-weight: 600;
     float: left; 
-    margin-right: 10px;
+  
     
     &:hover{
       background-color: #0D326F;
       border: 1px solid #0D326F;
       color: #fff;
     }
+
+    
 `;
 
 // 반려동물정보 입력
@@ -1069,6 +1105,7 @@ const AnimalBox = styled.div`
 
   //인풋
   input {
+    margin-left: 30px;
     width: 630px;
     height: 54px;
     padding: 0 32px;
@@ -1105,14 +1142,9 @@ const AnimalBox = styled.div`
     color: #ff27a3;
   }
 
-  //select {
-  //  position: relative;
-  //  left: 420px;
-  //  top: 0px;
-  //  z-index: 1;
-  //  width: 70px;
-  //  height: 26px;
-  //}
+  select {
+    margin-left: 30px;
+  }
 `;
 
 //반려동물정보 - 삭제/추가

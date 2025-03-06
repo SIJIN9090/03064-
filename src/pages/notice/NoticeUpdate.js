@@ -2,41 +2,24 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Update from "../../components/button/Update";
+import Back from "../../components/button/Back";
 
 function NoticeUpdate() {
   const location = useLocation();
   const { bbs } = location.state || {};
-  console.log(bbs);
-  // const boardId = bbs.boardId;
-  const [title, setTitle] = useState(bbs.title);
-  const [content, setContent] = useState(bbs.content);
   const navigate = useNavigate();
+  const [title, setTitle] = useState(bbs?.title || "");
+  const [content, setContent] = useState(bbs?.content || "");
+  const [pageNumber] = useState(1);
+  const noticeId = bbs?.id;
 
-  const update = async () => {
-    try {
-      await axios.patch(`/api/admin/notice/${bbs.id}`, {
-        title: title,
-        content: content,
-      });
-      alert("수정되었습니다.");
-      navigate(`/admin/notice/${bbs.id}`);
-    } catch (error) {
-      console.error("Error fetching board data:", error);
-    }
-  };
-
-  //changeTitle
   const changeTitle = (event) => {
     setTitle(event.target.value);
   };
 
-  //changeContent
   const changeContent = (event) => {
     setContent(event.target.value);
-  };
-
-  const handleCancelClick = () => {
-    navigate(`/notice/${bbs.id}`); // 취소 시 해당 공지의 디테일 페이지로 이동
   };
 
   return (
@@ -64,8 +47,13 @@ function NoticeUpdate() {
         </TableBox>
 
         <BottomBox>
-          <Button onClick={update}>확인</Button>
-          <Button onClick={handleCancelClick}>취소</Button>
+          <Update
+            noticeId={noticeId}
+            navigate={navigate}
+            title={title}
+            content={content}
+          />
+          <Back pageNumber={pageNumber} itemId={bbs.id} />
         </BottomBox>
       </ContentWrapper>
     </Container>
