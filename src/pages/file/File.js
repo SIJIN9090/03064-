@@ -9,8 +9,8 @@ function File({ noticeId }) {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await axios.get(`/api/notice/${noticeId}/files`);
-        setFiles(response.data); // 서버에서 받아온 파일 목록을 상태에 저장
+        const response = await axios.get(`/api/notice/${noticeId}/file`);
+        setFiles(response.data.noticeFiles || []); // 서버에서 받아온 파일 목록을 상태에 저장
       } catch (error) {
         console.error("파일 목록 불러오기 오류:", error);
       }
@@ -23,21 +23,22 @@ function File({ noticeId }) {
 
   const downloadFile = async (fileId) => {
     try {
-      const response = await axios.get(`/api/notice/${noticeId}/file`, {
-        params: { fileId },
-        responseType: "blob", // 파일을 blob 형식으로 받기
-      });
+      // 파일을 다운로드할 때 fileId를 포함한 URL로 요청
+      const response = await axios.get(
+        `/api/notice/${noticeId}/file/${fileId}`,
+        { responseType: "blob" } // 파일을 blob 형식으로 받기
+      );
+
+      // 서버에서 originFileName을 헤더에서 받아옴
+      const originFileName = response.headers["content-disposition"]
+        .split("filename=")[1]
+        .replace(/"/g, "");
 
       // 파일 다운로드 처리
       const downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = downloadUrl;
-      link.setAttribute(
-        "download",
-        response.headers["content-disposition"]
-          .split("filename=")[1]
-          .replace(/"/g, "")
-      );
+      link.setAttribute("download", originFileName); // originFileName으로 다운로드
       document.body.appendChild(link);
       link.click();
     } catch (error) {
@@ -47,11 +48,11 @@ function File({ noticeId }) {
 
   return (
     <FileContainer>
-      {files && files.length > 0 ? (
-        files.map((file, index) => (
-          <FileItem key={index}>
+      {files.length > 0 ? (
+        files.map((file) => (
+          <FileItem key={file.id}>
             <FileButton onClick={() => downloadFile(file.id)}>
-              {file.name} (다운로드)
+              {file.originFileName} (다운로드)
             </FileButton>
           </FileItem>
         ))

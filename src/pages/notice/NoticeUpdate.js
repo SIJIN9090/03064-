@@ -11,6 +11,7 @@ function NoticeUpdate() {
   const navigate = useNavigate();
   const [title, setTitle] = useState(bbs?.title || "");
   const [content, setContent] = useState(bbs?.content || "");
+  const [files, setFiles] = useState([]); // 추가: 파일 상태
   const [pageNumber] = useState(1);
   const noticeId = bbs?.id;
 
