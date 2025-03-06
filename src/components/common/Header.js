@@ -125,92 +125,95 @@ function Header() {
     <HeaderContainer>
       <HeaderSection>
         <HeaderPosition>
-        <Logo>
-          <Link to="/">
-            <img src={header_logo} width="128px" height="36px" alt="logo" />
-          </Link>
-        </Logo>
-
-
-          <MainNavi   
-          onMouseEnter={() => setHovered(true)}  // 마우스가 올라가면 hovered 상태 true
-          onMouseLeave={() => setHovered(false)} // 마우스가 떠나면 hovered 상태 false
-        >
-        <ul>
-          <img
-            src={header_menu_stroke}
-            width="36px"
-            height="36px"
-            alt="menu"
-          />
-          {navItems.map((item) => (
-            <li key={item.name}>
-                <MenuLink to={item.path || "#"}>{item.name}</MenuLink>
-            </li>
-          ))}
-        </ul>
-  </MainNavi>
-  {/* 서브 메뉴를 밖으로 빼서 따로 관리 */}
-  <SubNavi show={hovered}
-  onMouseEnter={() => setHovered(true)}
-  onMouseLeave={() => setHovered(false)} >
-    <article>
-  {navItems.map((item) => {
-    if (item.submenu) {
-      return (
-        <ul key={item.name}>
-          {item.submenu.map((subItem) => (
-            <li key={subItem.name}>
-              <SubLink to={subItem.path}>{subItem.name}</SubLink>
-            </li>
-          ))}
-        </ul>
-      );
-    }
-    return null;
-  })}
-  </article>
-  </SubNavi>
-
-        <HederSectionB>
-          <LoginBox>
-            {useRole === "ROLE_ADMIN" ? (
-              <>
-                <Link to="/admin" onClick={handleAdminPageClick}>
-                  <img src={myIcon} alt="관리자페이지" />
-                  <LoginButton>관리자</LoginButton>
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link to="/mypagecheck" onClick={handleMyPageClick}>
-                  <img src={myIcon} alt="마이페이지" />
-                  <LoginButton>마이페이지</LoginButton>
-                </Link>
-              </>
-            )}
-
-            {auth ? (
-              <Link to="/" onClick={handleLogout}>
-                <img src={userIcon} />
-                <LoginButton>로그아웃</LoginButton>
-              </Link>
-            ) : (
-              <Link to="/signIn">
-                <img src={userIcon} />
-                <LoginButton>로그인</LoginButton>
-              </Link>
-            )}
-          </LoginBox>
-          <SearchBox>
+          <Logo>
             <Link to="/">
-              <input type="search" placeholder="검색어를 입력해주세요."></input>
-              <img src={searchIcon} />
-              <LoginButton></LoginButton>
+              <img src={header_logo} width="128px" height="36px" alt="logo" />
             </Link>
-          </SearchBox>
-       
-        </HederSectionB>  
+          </Logo>
+
+          <MainNavi
+            onMouseEnter={() => setHovered(true)} // 마우스가 올라가면 hovered 상태 true
+            onMouseLeave={() => setHovered(false)} // 마우스가 떠나면 hovered 상태 false
+          >
+            <ul>
+              <img
+                src={header_menu_stroke}
+                width="36px"
+                height="36px"
+                alt="menu"
+              />
+              {navItems.map((item) => (
+                <li key={item.name}>
+                  <MenuLink to={item.path || "#"}>{item.name}</MenuLink>
+                </li>
+              ))}
+            </ul>
+          </MainNavi>
+          {/* 서브 메뉴를 밖으로 빼서 따로 관리 */}
+          <SubNavi
+            show={hovered}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
+            <article>
+              {navItems.map((item) => {
+                if (item.submenu) {
+                  return (
+                    <ul key={item.name}>
+                      {item.submenu.map((subItem) => (
+                        <li key={subItem.name}>
+                          <SubLink to={subItem.path}>{subItem.name}</SubLink>
+                        </li>
+                      ))}
+                    </ul>
+                  );
+                }
+                return null;
+              })}
+            </article>
+          </SubNavi>
+
+          <HederSectionB>
+            <LoginBox>
+              {useRole === "ROLE_ADMIN" ? (
+                <>
+                  <Link to="/admin" onClick={handleAdminPageClick}>
+                    <img src={myIcon} alt="관리자페이지" />
+                    <LoginButton>관리자</LoginButton>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/mypagecheck" onClick={handleMyPageClick}>
+                    <img src={myIcon} alt="마이페이지" />
+                    <LoginButton>마이페이지</LoginButton>
+                  </Link>
+                </>
+              )}
+
+              {auth ? (
+                <Link to="/" onClick={handleLogout}>
+                  <img src={userIcon} />
+                  <LoginButton>로그아웃</LoginButton>
+                </Link>
+              ) : (
+                <Link to="/signIn">
+                  <img src={userIcon} />
+                  <LoginButton>로그인</LoginButton>
+                </Link>
+              )}
+            </LoginBox>
+            <SearchBox>
+              <Link to="/">
+                <input
+                  type="search"
+                  placeholder="검색어를 입력해주세요."
+                ></input>
+                <img src={searchIcon} />
+                <LoginButton></LoginButton>
+              </Link>
+            </SearchBox>
+          </HederSectionB>
         </HeaderPosition>
       </HeaderSection>
 
@@ -225,7 +228,6 @@ const HeaderContainer = styled.div`
   margin: auto;
   height: 100px;
   background-color: #0d326f;
-
 `;
 
 const HeaderSection = styled.div`
@@ -233,15 +235,14 @@ const HeaderSection = styled.div`
   align-items: center;
   justify-content: center;
   height: 100px;
- width: 100%;
+  width: 100%;
   position: fixed;
   z-index: 999999999;
   background-color: #0d326f;
-  
 `;
 
 const HeaderPosition = styled.div`
-   width: 1280px;
+  width: 1280px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -261,106 +262,10 @@ const Logo = styled.h1`
   }
 `;
 
-const Navigation = styled.nav`
-  justify-content: left;
-  align-items: left;
-   z-index: 99 ;
-  width: 500px;
-  font-weight: 500;
-
-  img {
-    position: relative;
-    top: -8px;
-  }
-  
-//   ul {
-//     position: relative;
-    
-//     display: flex;
-//     justify-content: left;
-//     width: 500px;
-//     list-style: none;
-//   }
-//   ul:first-child {
-//     padding: 40px 10px 20px 20px;
-
-//   }
-//   a{
-//     font-family: "Noto Sans KR", serif;
-//   }
-//   ul li {
-//     //width: 140px;
-//     position: relative;
-//     margin-left: 20px;
-    
-//     &:hover ul {
-//       display: block;
-//     }
-//   }
-//   ul ul li a{
-//     margin-right: 20px;
-//   }
-  
-//   ul ul {
-//   width: 500px;
-//     display: none;
-//     position: absolute;
-//     top: 80px;
-//     left: 0;
-//     width: 100%;
-//     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-//     text-align: left;
-//     padding: 15px 50px 40px 20px;
-
-//     //하위메뉴 스타일
-//     li{
-
-//       width: 300px;
-//       margin-right:110px;
-//       margin-bottom: 10px;
-//       font-size: 14px;
-//       color: rgb(0, 0, 0);
-//       text-rendering: optimizeLegibility;
-//       border:none;
-//     }
-//   }
-//   li:first-child{
-//     font-size: 16px;
-//     font-weight: 700;
-//   }
-//   li:hover ul,
-//   &:hover ul ul {
-//     display: block;
-//     visibility: visible;
-//   }
-
-//  //서브메뉴
-//  div {
-//    background-color: #F6F7F8;
-//       display: none;
-//       position: fixed;
-//       height: 180px;
-//       top: 100px;
-//       left:0px;
-//       min-width :100vw;
-//       width: 100%;
-//       z-index: -1;
-//       flex-direction: row;
-//       padding: 10px;
-//       box-sizing: border-box;
-   
-//     }
-//     &:hover div {
-//       display: block;
-//     }
-//   }
-// `;
-
-
 const MainNavi = styled(Link)`
   justify-content: left;
   align-items: left;
-   z-index: 99 ;
+  z-index: 99;
   width: 500px;
   font-weight: 500;
   text-align: center;
@@ -369,34 +274,34 @@ const MainNavi = styled(Link)`
     top: -8px;
   }
 
-  ul{
-     display: flex;
-  justify-content: left;
+  ul {
+    display: flex;
+    justify-content: left;
     padding: 40px 10px 20px 20px;
   }
-  li{
-  
-   width: 650px;
+  li {
+    width: 650px;
   }
- a{
-  font-family: "Noto Sans KR", serif;
- }
-
+  a {
+    font-family: "Noto Sans KR", serif;
+  }
 `;
 
 const SubNavi = styled(Link)`
-  display: ${(props) => (props.show ? 'block' : 'none')};
+  display: ${(props) => (props.show ? "block" : "none")};
   top:120px;
    position: absolute;
    background-color: #F6F7F8;
   width: 100vw;
   height: 180px;
-
+  font-family: "Noto Sans KR", serif;
   article{
-   margin-left:320px;
-  display: flex;
+
+    display: flex;
     height: 180px;
     padding:10px;
+    justify-content: center;
+
     ul li{
    padding:3px;
     }
@@ -413,20 +318,19 @@ const SubNavi = styled(Link)`
 
   }
  a{
-  font-family: "Noto Sans KR", serif;
   height: 100px;
  }
 
 `;
 
 const MenuLink = styled(Link)`
-   text-decoration: none;
+  text-decoration: none;
   color: #fff;
   font-size: 14.2px;
   width: 600px;
 
   &:hover {
-    color: #FFA228;
+    color: #ffa228;
   }
 `;
 
@@ -440,40 +344,36 @@ const SubLink = styled(Link)`
 `;
 //네비)오른쪽
 const HederSectionB = styled.div`
-  
   margin-bottom: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   &:hover {
-    color:#FFA228;
+    color: #ffa228;
   }
 `;
 
 const LoginBox = styled.div`
-   padding: 50px 20px 20px 20px;
+  padding: 50px 20px 20px 20px;
   font-size: 14.2px;
   position: relative;
   display: flex;
   justify-content: left;
   color: #fff;
-  
+
   width: 300px;
-  
 
-
-  a{
+  a {
     &:hover {
-      color:#FFA228;
+      color: #ffa228;
     }
   }
-  
-  
+
   a {
     padding: 16px;
     &:hover {
-      color:#FFA228;
+      color: #ffa228;
     }
   }
 
@@ -481,7 +381,7 @@ const LoginBox = styled.div`
     top: 3px;
     position: relative;
     &:hover {
-      color:#FFA228;
+      color: #ffa228;
     }
   }
 `;
@@ -497,18 +397,17 @@ const LoginButton = styled.button`
 `;
 
 const SearchBox = styled.button`
- 
   top: 20px;
   border: none;
   font-size: 12px;
   cursor: pointer;
   position: relative;
- 
+
   width: 260px;
   height: 30px;
   border-radius: 15px 13px;
   margin-bottom: 16px;
-  
+
   outline: none;
   input {
     //height: 25px;
@@ -516,7 +415,7 @@ const SearchBox = styled.button`
     //border: none;
     //border-bottom: 1px solid rgba(0,0,0,0.2);
     //padding-bottom: 2px;
-    
+
     font-size: 13px;
     font-weight: 300;
     border: none;
