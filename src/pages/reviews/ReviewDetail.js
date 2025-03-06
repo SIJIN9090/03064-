@@ -14,6 +14,7 @@ function ReviewDetail() {
   const { reviewId } = useParams();
   const { member } = useContext(AuthContext); // AuthContext에서 member 객체 가져오기
   const navigate = useNavigate();
+  const [comments, setComments] = useState([]);
   const [postType, setPostType] = useState(3);
 
   const getBbsDetail = async () => {
@@ -37,13 +38,6 @@ function ReviewDetail() {
     });
     getBbsDetail();
   }, [reviewId]);
-
-  useEffect(() => {
-    console.log("reviewId:", reviewId); // 콘솔로 확인
-    if (!reviewId) return;
-    console.log("reviewId:", reviewId);
-    getBbsDetail();
-  }, []);
 
   return (
     <Container>
