@@ -49,7 +49,7 @@ function SignIn() {
       localStorage.setItem("access_token", resp.data.token);
       localStorage.setItem("nick_name", resp.data.nickName);
 
-      setAuth(resp.data.nickName);
+      setAuth({ nick_name: resp.data.nickName, access_token: resp.data.token });
       setHeaders({ Authorization: `Bearer ${resp.data.token}` }); // HttpHeadersContext에 Authorization 헤더 저장
 
       navigate("/"); // 로그인 후 홈으로 리다이렉트
@@ -58,6 +58,21 @@ function SignIn() {
       console.error("Error Details:"); // 전체 오류 객체 출력
     }
   };
+
+  // 새로고침 시 로그인 상태 유지
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    const nickName = localStorage.getItem("nick_name");
+
+    if (token && nickName) {
+      console.log("로그인 상태 유지:", nickName);
+      setAuth({ nick_name: nickName, access_token: token });
+      setHeaders({ Authorization: `Bearer ${token}` });
+      navigate("/"); // 이미 로그인된 상태면 홈으로 리다이렉트
+    } else {
+      console.log("로그인 정보가 없습니다.");
+    }
+  }, [setAuth, setHeaders, navigate]);
 
   return (
     <LoginContainer>

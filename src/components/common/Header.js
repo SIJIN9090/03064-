@@ -8,8 +8,7 @@ import userIcon from "../../assets/imgs/header_user.svg";
 import searchIcon from "../../assets/imgs/header_search.svg";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { AuthContext } from "../../context";
-
+import { AuthContext, HttpHeadersContext } from "../../context";
 // --------------------------------------------------------------------------------------------------------------------
 
 function Header() {
@@ -67,6 +66,7 @@ function Header() {
   const navigate = useNavigate();
   const { auth, setAuth } = useContext(AuthContext);
   const token = localStorage.getItem("access_token");
+  const { setHeaders } = useContext(HttpHeadersContext); // HttpHeadersContext에서 setHeaders 가져오기
 
   let useRole = null;
   if (token) {
@@ -98,12 +98,27 @@ function Header() {
   const handleLogout = () => {
     const confirmLogout = window.confirm("로그아웃 하시겠습니까?");
     if (confirmLogout) {
+      // localStorage에서 토큰과 사용자 정보 삭제
       localStorage.removeItem("access_token");
       localStorage.removeItem("nick_name");
-      setAuth(false);
-      navigate("/");
+
+      // 상태 초기화
+      setAuth({ nick_name: null, access_token: null });
+
+      // 헤더 초기화 (Authorization 헤더 제거)
+      setHeaders({ Authorization: "" });
+
+      // 로그아웃 후 로그인 페이지로 리디렉션
+      navigate("/login");
     }
   };
+
+  useEffect(() => {
+    if (!auth.access_token) {
+      console.log("로그아웃 상태 확인");
+      navigate("/signIn"); // 로그아웃된 상태에서 로그인 페이지로 리디렉션
+    }
+  }, [auth]); // auth 상태가 변경될 때마다 리렌더링
 
   const handleMyPageClick = (e) => {
     if (!auth) {
@@ -191,7 +206,7 @@ function Header() {
                 </>
               )}
 
-              {auth ? (
+              {auth && auth.access_token ? (
                 <Link to="/" onClick={handleLogout}>
                   <img src={userIcon} />
                   <LoginButton>로그아웃</LoginButton>
