@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
-function File({ files, noticeId }) {
+function File({ noticeId }) {
+  const [files, setFiles] = useState([]);
+
+  // 파일 목록을 noticeId에 맞게 불러오는 useEffect
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+        const response = await axios.get(`/api/notice/${noticeId}/files`);
+        setFiles(response.data); // 서버에서 받아온 파일 목록을 상태에 저장
+      } catch (error) {
+        console.error("파일 목록 불러오기 오류:", error);
+      }
+    };
+
+    if (noticeId) {
+      fetchFiles(); // noticeId가 존재하면 파일 목록을 불러옴
+    }
+  }, [noticeId]);
+
   const downloadFile = async (fileId) => {
     try {
-      const response = await axios.get(`/api/admin/notice/${noticeId}/file`, {
+      const response = await axios.get(`/api/notice/${noticeId}/file`, {
         params: { fileId },
         responseType: "blob", // 파일을 blob 형식으로 받기
       });
@@ -31,11 +49,11 @@ function File({ files, noticeId }) {
     <FileContainer>
       {files && files.length > 0 ? (
         files.map((file, index) => (
-          <div key={index}>
+          <FileItem key={index}>
             <FileButton onClick={() => downloadFile(file.id)}>
               {file.name} (다운로드)
             </FileButton>
-          </div>
+          </FileItem>
         ))
       ) : (
         <NoFilesMessage>파일이 없습니다.</NoFilesMessage>
@@ -44,10 +62,22 @@ function File({ files, noticeId }) {
   );
 }
 
+// 스타일 추가
 const FileContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px; // 파일 항목 간 간격 추가
+  padding: 20px;
+`;
+
+const FileItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
 const FileButton = styled.button`
@@ -63,16 +93,12 @@ const FileButton = styled.button`
   &:hover {
     background-color: #45a049;
   }
-
-  &:focus {
-    outline: none;
-  }
 `;
 
 const NoFilesMessage = styled.p`
-  font-size: 16px;
-  color: #666;
-  font-style: italic;
+  color: #777;
+  font-size: 18px;
+  text-align: center;
 `;
 
 export default File;

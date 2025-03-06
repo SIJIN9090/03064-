@@ -156,19 +156,4 @@ const BottomBox = styled.div`
   margin-bottom: 20px;
 `;
 
-// 버튼 스타일
-const Button = styled.button`
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #111111;
-  color: white;
-  cursor: pointer;
-  margin-left: 10px;
-
-  &:hover {
-    background-color: #111111;
-  }
-`;
-
 export default NoticeDetail;
